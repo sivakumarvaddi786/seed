@@ -35,16 +35,6 @@ def createFolder(folderName) {
     ]))
 }
 
-def createFolder(folderName) {
-    // Create folder implementation
-    def folderPath = "${JENKINS_HOME}/jobs/${folderName}"
-    if (!fileExists(folderPath)) {
-        sh "mkdir -p ${folderPath}"
-    } else {
-        println "Folder '${folderName}' already exists."
-    }
-}
-
 def createMultiPipelineJob(jobName, folderName) {
     // Create multi-pipeline job implementation
     def jobScript = """
