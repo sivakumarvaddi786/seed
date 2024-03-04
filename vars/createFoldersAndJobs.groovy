@@ -1,44 +1,40 @@
 def call(String dslFilePath) {
-    // Read DSL file
     def dslScript = readFileFromWorkspace(dslFilePath)
-    
-    // Split DSL script into lines and execute each line
-    dslScript.eachLine { line ->
-        def parts = line.tokenize('(')
-        def command = parts[0].trim()
-        def args = parts[1].substring(0, parts[1].length() - 1).split(',').collect { it.trim() }
+    def dslLines = dslScript.readLines()
 
-        switch(command) {
-            case 'folder':
-                createFolder(args[0])
-                break
-            case 'multiPipeline':
-                createMultiPipelineJob(args[0], args[1])
-                break
-            case 'pipeline':
-                createPipelineJob(args[0], args[1])
-                break
-            default:
-                println "Unknown command: ${command}"
+    dslLines.each { line ->
+        if (line.startsWith("folder(")) {
+            def folderName = line.substring(8, line.length() - 1)
+            createFolder(folderName)
+        } else if (line.startsWith("multiPipeline(")) {
+            def args = getArguments(line)
+            createMultiPipelineJob(args[0], args[1])
+        } else if (line.startsWith("pipeline(")) {
+            def args = getArguments(line)
+            createPipelineJob(args[0], args[1])
+        } else {
+            println "Unknown command: ${line}"
         }
     }
 }
 
 def createFolder(folderName) {
-    // Create folder implementation
+    // Implementation to create folder
 }
 
 def createMultiPipelineJob(jobName, folderName) {
-    // Create multi-pipeline job implementation
+    // Implementation to create multi-pipeline job
 }
 
 def createPipelineJob(jobName, folderName) {
-    // Create pipeline job implementation
+    // Implementation to create pipeline job
 }
 
 def readFileFromWorkspace(String filePath) {
-    def workspace = pwd()
-    def file = new File("${workspace}/${filePath}")
-    return file.text
+    return new File(filePath).text
 }
 
+def getArguments(line) {
+    def args = line.substring(line.indexOf("(") + 1, line.indexOf(")")).split(',').collect { it.trim() }
+    return args
+}
