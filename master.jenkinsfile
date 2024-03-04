@@ -6,28 +6,8 @@ pipeline {
         stage('Create Folders and Jobs') {
             steps {
                 script {
-                    // Run shell script to locate and perform operations on jobs.dsl
-                    sh '''
-                        #!/bin/bash
-                        # Navigate to the workspace directory
-                        cd ${WORKSPACE}
-                        
-                        # Use find command to locate jobs.dsl file
-                        FILE_PATH=$(find . -type f -name "jobs.dsl" | head -n 1)
-                        
-                        # Check if the file exists
-                        if [ -f "${FILE_PATH}" ]; then
-                            echo "Found jobs.dsl file at: ${FILE_PATH}"
-                            
-                            # Perform operations on the file (e.g., print its content)
-                            cat "${FILE_PATH}"
-                            
-                            # Call your library function here with the file path
-                            createFoldersAndJobs("./jobs.dsl")
-                        else
-                            echo "jobs.dsl file not found in the workspace."
-                        fi
-                    '''
+                    // Call the createFoldersAndJobs function directly from the pipeline script
+                    createFoldersAndJobs("./jobs.dsl")
                 }
             }
         }
