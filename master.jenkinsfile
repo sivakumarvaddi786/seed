@@ -1,3 +1,3 @@
 //@Library('your-shared-library') _
-@Library('local') _
+@Library('github.com/sivakumarvaddi786/seed@main') _
 createFoldersAndJobs('jobs.dsl')
