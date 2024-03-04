@@ -9,7 +9,7 @@ pipeline {
                     // Ensure that file operations are performed within a context
                         // Call your library function here
                         sh 'ls -l'
-                        createFoldersAndJobs('jobs.dsl')
+                        createFoldersAndJobs("jobs.dsl")
                 }
             }
         }
