@@ -23,7 +23,7 @@ pipeline {
                             cat "${FILE_PATH}"
                             
                             # Call your library function here with the file path
-                            createFoldersAndJobs "${FILE_PATH}"
+                            createFoldersAndJobs "${WORKSPACE}/jobs.dsl"
                         else
                             echo "jobs.dsl file not found in the workspace."
                         fi
