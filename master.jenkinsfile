@@ -1,3 +1,16 @@
-//@Library('your-shared-library') _
 @Library('github.com/sivakumarvaddi786/seed@main') _
-createFoldersAndJobs('jobs.dsl')
+pipeline {
+    agent any
+    
+    stages {
+        stage('Create Folders and Jobs') {
+            steps {
+                script {
+                    // Ensure that file operations are performed within a context
+                        // Call your library function here
+                        createFoldersAndJobs('jobs.dsl')
+                }
+            }
+        }
+    }
+}
