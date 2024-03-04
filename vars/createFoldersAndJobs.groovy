@@ -19,19 +19,80 @@ def call(String dslFilePath) {
 }
 
 def createFolder(folderName) {
-    // Implementation to create folder
+    // Create folder using Jenkins API
+    def folder = Jenkins.instance.createProject(jenkins.model.Folder, folderName)
+    println "Folder created: ${folder.fullName}"
+
+    // Attach shared library to folder
+    folder.addProperty(new org.jenkinsci.plugins.workflow.libs.FolderLibraries([
+        new org.jenkinsci.plugins.workflow.libs.LibraryConfiguration(
+            "MySharedLibrary", // Shared library name
+            new org.jenkinsci.plugins.workflow.libs.LibraryConfiguration.DefaultVersionSpec("master"), // Branch or tag
+            new org.jenkinsci.plugins.workflow.libs.LibraryConfiguration.ModernSCMSourceDefinition(
+                "https://github.com/your-shared-library-repo.git" // Shared library repository URL
+            )
+        )
+    ]))
+}
+
+def createFolder(folderName) {
+    // Create folder implementation
+    def folderPath = "${JENKINS_HOME}/jobs/${folderName}"
+    if (!fileExists(folderPath)) {
+        sh "mkdir -p ${folderPath}"
+    } else {
+        println "Folder '${folderName}' already exists."
+    }
 }
 
 def createMultiPipelineJob(jobName, folderName) {
-    // Implementation to create multi-pipeline job
+    // Create multi-pipeline job implementation
+    def jobScript = """
+pipeline {
+    agent any
+    stages {
+        stage('Example') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+    }
+}
+"""
+    def jobPath = "${JENKINS_HOME}/jobs/${folderName}/jobs/${jobName}"
+    if (!fileExists(jobPath)) {
+        sh "mkdir -p ${jobPath}"
+        writeFile file: "${jobPath}/config.xml", text: jobScript
+    } else {
+        println "Multi-pipeline job '${jobName}' in folder '${folderName}' already exists."
+    }
 }
 
 def createPipelineJob(jobName, folderName) {
-    // Implementation to create pipeline job
+    // Create pipeline job implementation
+    def jobScript = """
+pipeline {
+    agent any
+    stages {
+        stage('Example') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+    }
+}
+"""
+    def jobPath = "${JENKINS_HOME}/jobs/${folderName}/jobs/${jobName}"
+    if (!fileExists(jobPath)) {
+        sh "mkdir -p ${jobPath}"
+        writeFile file: "${jobPath}/config.xml", text: jobScript
+    } else {
+        println "Pipeline job '${jobName}' in folder '${folderName}' already exists."
+    }
 }
 
-def readFileFromWorkspace(String filePath) {
-    return new File(filePath).text
+def fileExists(filePath) {
+    return sh(script: "[ -e ${filePath} ]", returnStatus: true) == 0
 }
 
 def getArguments(line) {
