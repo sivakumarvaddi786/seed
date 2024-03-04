@@ -27,7 +27,7 @@ def createFolder(folderName) {
     folder.addProperty(new org.jenkinsci.plugins.workflow.libs.FolderLibraries([
         new org.jenkinsci.plugins.workflow.libs.LibraryConfiguration(
             "MySharedLibrary", // Shared library name
-            new org.jenkinsci.plugins.workflow.libs.LibraryConfiguration.DefaultVersionSpec("master"), // Branch or tag
+            new org.jenkinsci.plugins.workflow.libs.LibraryConfiguration.DefaultVersionSpec("main"), // Branch or tag
             new org.jenkinsci.plugins.workflow.libs.LibraryConfiguration.ModernSCMSourceDefinition(
                 "https://github.com/your-shared-library-repo.git" // Shared library repository URL
             )
